@@ -1,0 +1,66 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use App\Models\Reservation;
+
+class ReservationSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $reservations = [
+            [
+                'user_id' => '1',
+                'hall_id' => 1,
+                'num_of_guests' => 4,
+                'arrival' => '2020-05-18',
+                'departure' => '2020-05-28'
+            ],
+            [
+                'user_id' => '1',
+                'hall_id' => 2,
+                'num_of_guests' => 1,
+                'arrival' => '2020-05-10',
+                'departure' => '2020-05-12'
+            ],
+            [
+                'user_id' => '1',
+                'hall_id' => 3,
+                'num_of_guests' => 3,
+                'arrival' => '2020-05-06',
+                'departure' => '2020-05-07'
+            ],
+            [
+                'user_id' => '1',
+                'hall_id' => 4,
+                'num_of_guests' => 2,
+                'arrival' => '2020-05-12',
+                'departure' => '2020-05-15'
+            ],
+            [
+                'user_id' => '1',
+                'hall_id' => 2,
+                'num_of_guests' => 2,
+                'arrival' => '2020-05-20',
+                'departure' => '2020-05-24'
+            ]
+        ];
+
+        foreach ($reservations as $reservation) {
+            Reservation::create(array(
+                'user_id' => $reservation['user_id'],
+                'hall_id' => $reservation['hall_id'],
+                'num_of_guests' => $reservation['num_of_guests'],
+                'arrival' => $reservation['arrival'],
+                'departure' => $reservation['departure']
+            ));
+        }
+    }
+}
