@@ -13,4 +13,13 @@ class HotelController extends Controller
         $hotels = Hotel::all();
         return $hotels;
     }
+
+    public function store(Request $request)
+    {
+        $hotel = Hotel::create($request->all());
+        return response()->json([
+            'message' => 'Hotel created successfully',
+            'hotel' => $hotel
+        ], 201);
+    }
 }

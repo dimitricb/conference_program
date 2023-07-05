@@ -29,17 +29,6 @@ class ReservationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create($hotel_id)
-    {
-        $hotelInfo = Hotel::with('halls')->get()->find($hotel_id);
-        return $hotelInfo;
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -49,6 +38,10 @@ class ReservationController extends Controller
     {
         $request->request->add(['user_id' => 1]);
         Reservation::create($request->all());
+        return response()->json([
+            'message' => 'Reservation created successfully',
+            'reservation' => $request->all()
+        ], 201);
     }
 
     /**
@@ -57,25 +50,19 @@ class ReservationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Reservation $reservation)
+    //prikazi odredjenu rezervaciju
+    public function show($id)
     {
-        $reservation = Reservation::with('hall', 'hall.hotel')->get()->find($reservation->id);
-        $hotel_id = $reservation->hall->hotel_id;
-        $hotelInfo = Hotel::with('halls')->get()->find($hotel_id);
+        if ($id > Reservation::all()->last()->id || $id < 0) {
+            return response([
+                'message' => 'out of scope'
+            ], 400);
+        }
+        $reservation = Reservation::with('hall', 'hall.hotel')->get()->find($id);
+        return $reservation;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Reservation $reservation)
-    {
-        $reservation = Reservation::with('hall', 'hall.hotel')->get()->find($reservation->id);
-        $hotel_id = $reservation->hall->hotel_id;
-        $hotelInfo = Hotel::with('halls')->get()->find($hotel_id);
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -84,11 +71,19 @@ class ReservationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Reservation $reservation)
+    public function update(Request  $request, $id)
     {
-        $reservation->user_id = 1;
-
-        $reservation->save();
+        if ($id > Reservation::all()->last()->id || $id < 0) {
+            return response([
+                'message' => 'out of scope'
+            ], 400);
+        }
+        $reservation = Reservation::with('hall', 'hall.hotel')->get()->find($id);
+        $reservation->update($request->all());
+        return response()->json([
+            'message' => 'Reservation updated successfully',
+            $reservation
+        ], 201);
     }
 
     /**
@@ -97,9 +92,18 @@ class ReservationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reservation $reservation)
+    public function destroy($id)
     {
-        $reservation = Reservation::find($reservation->id);
-        $reservation->delete();
+        if ($id > Reservation::all()->last()->id || $id < 0) {
+            return response([
+                'message' => 'out of scope'
+            ], 400);
+        }
+        $reservation = Reservation::with('hall', 'hall.hotel')->get()->find($id);
+        Reservation::destroy($id);
+        return response()->json([
+            'message' => 'Reservation deleted successfully',
+            $reservation
+        ], 201);
     }
 }
