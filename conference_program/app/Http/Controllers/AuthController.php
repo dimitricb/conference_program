@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+//use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -37,8 +38,11 @@ class AuthController extends Controller
     public function logout(User $user)
     {
         auth()->user()->tokens()->delete();
+        // auth()->user()->where::tokens()->delete();
+        //DB::table('oauth_access_tokens')->where('user_id', $user->id)->delete();
+
         return [
-            'message' => 'logged out'
+            'message' => 'logged out,token destroyed'
         ];
     }
 

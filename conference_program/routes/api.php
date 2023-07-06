@@ -29,6 +29,7 @@ Route::get('/hotels', [HotelController::class, 'index']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/hotels/halls', [HallsController::class, 'index']);
+Route::get('/hotels/search/{name}', [HotelController::class, 'search']);
 
 //protected routes
 

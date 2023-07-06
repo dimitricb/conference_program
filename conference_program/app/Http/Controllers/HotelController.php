@@ -22,4 +22,9 @@ class HotelController extends Controller
             'hotel' => $hotel
         ], 201);
     }
+
+    public function search($name)
+    {
+        return Hotel::where('name', 'like', '%' . $name . '%')->get();
+    }
 }
